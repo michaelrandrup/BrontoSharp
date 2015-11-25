@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrontoClient.cs" />
     <Compile Include="BrontoResult.cs" />
     <Compile Include="Contacts.cs" />
     <Compile Include="LoginSession.cs" />
