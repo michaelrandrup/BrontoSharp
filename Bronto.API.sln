@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bronto.API", "Bronto.API\Bronto.API.csproj", "{FFBD9185-DD84-49CA-817E-7F91900252C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bronto.API.Tests", "Bronto.API.Tests\Bronto.API.Tests.csproj", "{63537644-9A43-4922-BD32-97815C98E77F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D64760BD-409A-42B4-A1EE-2C29535AC28F}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFBD9185-DD84-49CA-817E-7F91900252C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFBD9185-DD84-49CA-817E-7F91900252C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFBD9185-DD84-49CA-817E-7F91900252C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFBD9185-DD84-49CA-817E-7F91900252C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63537644-9A43-4922-BD32-97815C98E77F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63537644-9A43-4922-BD32-97815C98E77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63537644-9A43-4922-BD32-97815C98E77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63537644-9A43-4922-BD32-97815C98E77F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
