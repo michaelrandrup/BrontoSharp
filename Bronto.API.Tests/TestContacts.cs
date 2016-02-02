@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bronto.API.BrontoService;
+using Bronto.API.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,6 +12,18 @@ namespace Bronto.API.Tests
     [TestClass]
     public class TestContacts : BrontoBaseTestWithLogin
     {
+        private static List<fieldObject> fields = null;
+        [TestInitialize]
+        public void Initialize()
+        {
+            if (fields == null)
+            {
+                Contacts contacts = new Contacts(Login);
+                fields = contacts.Fields;
+            }
+            
+        }
+
         [TestMethod]
         public void Add5Contacts()
         {
@@ -88,12 +101,12 @@ namespace Bronto.API.Tests
         private contactObject GetTestContact(string Email, string FirstName, string LastName)
         {
             contactField[] customFields = new contactField[0];
-            if (ApiFields.Count > 0)
+            if (fields != null)
             {
                 customFields = new contactField[]
                 {
-                        new contactField() { content = FirstName, fieldId = ApiFields["firstname"] },
-                        new contactField() { content = LastName, fieldId = ApiFields["lastname"] }
+                        new contactField() { content = FirstName, fieldId = fields.IdOf("firstname")  },
+                        new contactField() { content = LastName, fieldId = fields.IdOf("lastname") }
                 };
             }
             return new contactObject()
@@ -107,16 +120,18 @@ namespace Bronto.API.Tests
         private IEnumerable<contactObject> GetTestContacts(int number, Random rnd)
         {
             List<contactObject> list = new List<contactObject>();
+            
+            
             for (int i = 0; i < number; i++)
             {
 
                 contactField[] customFields = new contactField[0];
-                if (ApiFields.Count > 0)
+                if (fields != null)
                 {
                     customFields = new contactField[]
                     {
-                        new contactField() { content = "First name " + Guid.NewGuid().ToString(), fieldId = ApiFields["firstname"] },
-                        new contactField() { content = "Last name " + Guid.NewGuid().ToString(), fieldId = ApiFields["lastname"] }
+                        new contactField() { content = "First name " + Guid.NewGuid().ToString(), fieldId = fields.IdOf("firstname") },
+                        new contactField() { content = "Last name " + Guid.NewGuid().ToString(), fieldId = fields.IdOf("lastname") }
                     };
                 }
                 list.Add(new contactObject()
@@ -189,7 +204,28 @@ namespace Bronto.API.Tests
             }
         }
 
+        [TestMethod]
+        public void ReadAllContactFields()
+        {
+            Contacts contacts = new Contacts(Login);
+            StartTimer("Reading all fields");
+            List<fieldObject> fields = contacts.Fields;
+            Console.WriteLine(EndTimer().ToString());
+            Console.WriteLine("{0} fields read:", fields.Count);
+            fields.ForEach(field =>
+            {
+                Console.WriteLine("{0}: {1} ({2}) of type {3} (visibility: {4})", field.id, field.name, field.label, field.type, field.visibility);
+                if (field.options != null)
+                {
+                    Console.WriteLine("Options:");
+                    field.options.ToList().ForEach(option =>
+                    {
+                        Console.WriteLine("{0}: {1} (default: {2})", option.label, option.value, option.isDefault);
+                    });
+                }
+            });
 
+        }
 
 
     }

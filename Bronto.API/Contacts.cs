@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace Bronto.API
 {
-    public class Contacts
+    public class Contacts : BrontoApiClass
     {
-        private LoginSession session = null;
-
-        public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(15);
 
         public Contacts(LoginSession session)
+            : base(session)
         {
-            this.session = session;
+            this.Timeout = TimeSpan.FromMinutes(15);
         }
 
         public BrontoResult Add(contactObject contact)
@@ -35,7 +33,6 @@ namespace Bronto.API
         {
             return await AddAsync(new contactObject[] { contact });
         }
-
 
         public async Task<BrontoResult> AddAsync(IEnumerable<contactObject> contacts)
         {
@@ -164,7 +161,35 @@ namespace Bronto.API
         }
 
 
-
+        public List<fieldObject> Fields
+        {
+            get
+            {
+                
+                using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
+                {
+                    readFields c = new readFields();
+                    c.filter = new fieldsFilter();
+                    c.pageNumber = 1;
+                    List<fieldObject> list = new List<fieldObject>();
+                    fieldObject[] result = client.readFields(session.SessionHeader, c);
+                    if (result != null)
+                    {
+                        list.AddRange(result);
+                    }
+                    while (result != null && result.Length > 0)
+                    {
+                        c.pageNumber += 1;
+                        result = client.readFields(session.SessionHeader, c);
+                        if (result != null)
+                        {
+                            list.AddRange(result);
+                        }
+                    }
+                    return list;
+                }
+            }
+        }
 
 
 
