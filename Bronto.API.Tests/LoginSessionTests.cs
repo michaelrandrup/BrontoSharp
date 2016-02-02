@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Bronto.API.Tests
 {
     [TestClass]
-    public class TestLoginSession : BrontoBaseTestClass
+    public class LoginSessionTests : BrontoBaseTestClass
     {
         [TestMethod]
         public void LoginUsingApiToken()

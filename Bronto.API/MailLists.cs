@@ -12,7 +12,7 @@ namespace Bronto.API
         public MailLists(LoginSession session)
             : base(session)
         {
-
+            
         }
 
         public BrontoResult Add(mailListObject mailList)

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 namespace Bronto.API.Tests
 {
     [TestClass]
-    public class TestContacts : BrontoBaseTestWithLogin
+    public class ContactsTests : BrontoBaseTestWithLogin
     {
         private static List<fieldObject> fields = null;
         [TestInitialize]
