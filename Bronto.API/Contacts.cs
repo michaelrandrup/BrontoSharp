@@ -10,14 +10,21 @@ namespace Bronto.API
     public class Contacts
     {
         private LoginSession session = null;
+
+        public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(15);
+
         public Contacts(LoginSession session)
         {
             this.session = session;
         }
 
+        public BrontoResult Add(contactObject contact)
+        {
+            return Add(new contactObject[] { contact });
+        }
         public BrontoResult Add(IEnumerable<contactObject> contacts)
         {
-            using (BrontoSoapPortTypeClient client = new BrontoSoapPortTypeClient())
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
             {
                 writeResult response = client.addContacts(session.SessionHeader, contacts.ToArray());
                 return BrontoResult.Create(response);
@@ -32,17 +39,134 @@ namespace Bronto.API
 
         public async Task<BrontoResult> AddAsync(IEnumerable<contactObject> contacts)
         {
-            using (BrontoSoapPortTypeClient client = new BrontoSoapPortTypeClient())
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
             {
                 addContactsResponse response = await client.addContactsAsync(session.SessionHeader, contacts.ToArray());
                 return BrontoResult.Create(response.@return);
             }
         }
 
-        
-        
-        
-        
+        public BrontoResult AddOrUpdate(contactObject contact)
+        {
+            return AddOrUpdate(new contactObject[] { contact });
+        }
+        public BrontoResult AddOrUpdate(IEnumerable<contactObject> contacts)
+        {
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
+            {
+                writeResult response = client.addOrUpdateContacts(session.SessionHeader, contacts.ToArray());
+                return BrontoResult.Create(response);
+            }
+        }
+
+        public async Task<BrontoResult> AddOrUpdateAsync(contactObject contact)
+        {
+            return await AddOrUpdateAsync(new contactObject[] { contact });
+        }
+
+        public async Task<BrontoResult> AddOrUpdateAsync(IEnumerable<contactObject> contacts)
+        {
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
+            {
+                addOrUpdateContactsResponse response = await client.addOrUpdateContactsAsync(session.SessionHeader, contacts.ToArray());
+                return BrontoResult.Create(response.@return);
+            }
+        }
+
+
+        public List<contactObject> Read()
+        {
+            return Read(new contactFilter());
+        }
+
+        public List<contactObject> Read(contactFilter filter)
+        {
+            if (filter == null)
+            {
+                throw new ArgumentNullException("filter", "The filter must be specified. Alternatively call the Read() function");
+            }
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
+            {
+                readContacts c = new readContacts();
+                c.filter = filter;
+                c.pageNumber = 1;
+                List<contactObject> list = new List<contactObject>();
+                contactObject[] result = client.readContacts(session.SessionHeader, c);
+                if (result != null)
+                {
+                    list.AddRange(result);
+                }
+                while (result != null && result.Length > 0)
+                {
+                    c.pageNumber += 1;
+                    result = client.readContacts(session.SessionHeader, c);
+                    if (result != null)
+                    {
+                        list.AddRange(result);
+                    }
+                }
+                return list;
+            }
+        }
+
+        public async Task<List<contactObject>> ReadAsync()
+        {
+            return await ReadAsync(new contactFilter());
+        }
+        public async Task<List<contactObject>> ReadAsync(contactFilter filter)
+        {
+            if (filter == null)
+            {
+                throw new ArgumentNullException("filter", "The filter must be specified. Alternatively call the Read() function");
+            }
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
+            {
+                readContacts c = new readContacts();
+                c.filter = filter;
+                c.pageNumber = 1;
+                List<contactObject> list = new List<contactObject>();
+                readContactsResponse response = await client.readContactsAsync(session.SessionHeader, c);
+                contactObject[] result = response.@return;
+                if (result != null)
+                {
+                    list.AddRange(result);
+                }
+                while (result != null && result.Length > 0)
+                {
+                    c.pageNumber += 1;
+                    response = await client.readContactsAsync(session.SessionHeader, c);
+                    result = response.@return;
+                    if (result != null)
+                    {
+                        list.AddRange(result);
+                    }
+                }
+                return list;
+            }
+        }
+
+        public BrontoResult Delete(IEnumerable<contactObject> contacts)
+        {
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
+            {
+                writeResult response = client.deleteContacts(session.SessionHeader, contacts.ToArray());
+                return BrontoResult.Create(response);
+            }
+        }
+
+        public async Task<BrontoResult> DeleteAsync(IEnumerable<contactObject> contacts)
+        {
+            using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
+            {
+                deleteContactsResponse response = await client.deleteContactsAsync(session.SessionHeader, contacts.ToArray());
+                return BrontoResult.Create(response.@return);
+            }
+        }
+
+
+
+
+
 
     }
 }

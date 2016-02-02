@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrontoResult.cs" />
+    <Compile Include="BrontoSoapClient.cs" />
     <Compile Include="Contacts.cs" />
     <Compile Include="LoginSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
