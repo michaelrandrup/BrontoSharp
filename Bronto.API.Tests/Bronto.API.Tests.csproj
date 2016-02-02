@@ -52,11 +52,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="TestLoginSession.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BrontoBaseTestClass.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BrontoBaseTestWithLogin.cs" />
     <Compile Include="TestContacts.cs" />
+    <Compile Include="TestLoginSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bronto.API\Bronto.API.csproj">
