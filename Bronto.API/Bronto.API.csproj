@@ -47,6 +47,8 @@
     <Compile Include="BrontoResult.cs" />
     <Compile Include="BrontoSoapClient.cs" />
     <Compile Include="Contacts.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\ReadContactsExtensions.cs" />
     <Compile Include="Extensions\FieldObjectExtensions.cs" />
     <Compile Include="Extensions\MailListExtensions.cs" />
     <Compile Include="LoginSession.cs" />
@@ -62,7 +64,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="StatusCodes.cs" />
+    <Compile Include="BrontoCodes.cs" />
     <Compile Include="Web References\api\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

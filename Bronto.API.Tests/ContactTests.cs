@@ -21,7 +21,7 @@ namespace Bronto.API.Tests
                 Contacts contacts = new Contacts(Login);
                 fields = contacts.Fields;
             }
-            
+
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace Bronto.API.Tests
         [TestMethod]
         public void AddAndUpdateContact()
         {
-            string email = Guid.NewGuid().ToString().Replace("{", "").Replace("}", "") + "@brontoapitest.com";
+            string email = Guid.NewGuid().ToString().Replace("{", "").Replace("}", "") + "@example.com";
             contactObject contact = GetTestContact(email, "Michael", "Randrup");
             Contacts contacts = new Contacts(Login);
             Console.WriteLine("Adding a contact with the email {0}", email);
@@ -78,7 +78,7 @@ namespace Bronto.API.Tests
             contact = GetTestContact(email, "Michael", "Randrup " + DateTime.Now.ToString());
             result = contacts.AddOrUpdate(contact);
             Assert.IsTrue(result.Items.Count(x => x.IsNew == true) == 0);
-            contact.email = Guid.NewGuid().ToString().Replace("{", "").Replace("}", "") + "@brontoapitest.com";
+            contact.email = Guid.NewGuid().ToString().Replace("{", "").Replace("}", "") + "@example.com";
             contact.id = result.Items.First().Id;
             Console.WriteLine("Updating the email from {0} to {1} for the created contact with id {2}", email, contact.email, contact.id);
             result = contacts.AddOrUpdate(contact);
@@ -120,8 +120,8 @@ namespace Bronto.API.Tests
         private IEnumerable<contactObject> GetTestContacts(int number, Random rnd)
         {
             List<contactObject> list = new List<contactObject>();
-            
-            
+
+
             for (int i = 0; i < number; i++)
             {
 
@@ -136,8 +136,10 @@ namespace Bronto.API.Tests
                 }
                 list.Add(new contactObject()
                 {
-                    email = string.Format("{0}@nowhere.com", RandomString(14, rnd)),
-                    fields = customFields
+                    email = string.Format("{0}@example.com", RandomString(14, rnd)),
+                    fields = customFields,
+                    created = DateTimeOffset.Now.DateTime,
+                    createdSpecified = true
                 });
             }
             return list;
@@ -147,11 +149,47 @@ namespace Bronto.API.Tests
         public void ReadAllContacts()
         {
             Contacts contacts = new Contacts(Login);
-            //StartTimer("Reading all contacts");
-            //List<contactObject> list = contacts.Read();
-            //Console.WriteLine(EndTimer().ToString());
-            //Console.WriteLine("{0} contacts read", list.Count);
-            StartTimer("Reading all contacts with @nowhere.com in email");
+            StartTimer("Reading all contacts with @example.com in email");
+            contactFilter filter = GetEmailContactFilter();
+            List<contactObject> list = ReadContactsInternal(contacts, filter, null);
+            Console.WriteLine(EndTimer().ToString());
+            Console.WriteLine("{0} contacts read", list.Count);
+            if (list.Count > 0)
+            {
+                WriteContactToConsole(list.First());
+            }
+        }
+
+        [TestMethod]
+        public void ReadAllContactsWithAllInfoAndFields()
+        {
+            Contacts contacts = new Contacts(Login);
+            StartTimer("Reading all contacts with @example.com in email");
+            contactFilter filter = GetEmailContactFilter();
+            List<contactObject> list = ReadContactsInternal(contacts, filter, Contacts.ReadOptions.IncludeAll().IncludeFields(fields));
+            Console.WriteLine(EndTimer().ToString());
+            Console.WriteLine("{0} contacts read", list.Count);
+            if (list.Count > 0)
+            {
+                WriteContactToConsole(list.First());
+            }
+        }
+
+        private void WriteContactToConsole(contactObject contact)
+        {
+            Console.WriteLine("First contact returned: {0} with ID {1} and Status {2}, created on {3}", contact.email, contact.id, contact.status, contact.created.ToBrontoString());
+            if (contact.fields != null)
+            {
+                Console.WriteLine("Contact fields:");
+                contact.fields.ToList().ForEach(field =>
+                {
+                    Console.WriteLine("{0} ({1}/{3}) has the value '{2}'. ", fields.LabelOf(field), fields.NameOf(field), field.content, fields.TypeOf(field));
+                });
+            }
+        }
+
+        private contactFilter GetEmailContactFilter()
+        {
             contactFilter filter = new contactFilter();
             filter.email = new stringValue[]
             {
@@ -159,20 +197,22 @@ namespace Bronto.API.Tests
                 {
                     @operator = filterOperator.Contains,
                      operatorSpecified = true,
-                      value = "nowhere.com"
+                      value = "example.com"
                 }
             };
-            List<contactObject> list = contacts.Read(filter);
-            Console.WriteLine(EndTimer().ToString());
-            Console.WriteLine("{0} contacts read", list.Count);
+            return filter;
+        }
 
+        private List<contactObject> ReadContactsInternal(Contacts contacts, contactFilter filter, readContacts options)
+        {
+            return contacts.Read(filter, options);
         }
 
         [TestMethod]
         public void DeleteAllContacts()
         {
             Contacts contacts = new Contacts(Login);
-            StartTimer("Reading all contacts with @nowhere.com in email");
+            StartTimer("Reading all contacts with @example.com in email");
             contactFilter filter = new contactFilter();
             filter.email = new stringValue[]
             {
@@ -180,13 +220,13 @@ namespace Bronto.API.Tests
                 {
                     @operator = filterOperator.Contains,
                      operatorSpecified = true,
-                      value = "nowhere.com"
+                      value = "example.com"
                 }
             };
             List<contactObject> list = contacts.Read(filter);
             Console.WriteLine(EndTimer().ToString());
             Console.WriteLine("{0} contacts read", list.Count);
-            StartTimer("Deleting all contacts with @nowhere.com in email");
+            StartTimer("Deleting all contacts with @example.com in email");
             BrontoResult result = contacts.Delete(list.Select(x => { return new contactObject() { id = x.id }; }));
             if (result.HasErrors)
             {

@@ -10,11 +10,16 @@ namespace Bronto.API
     public class Contacts : BrontoApiClass
     {
 
+        #region ctor
         public Contacts(LoginSession session)
             : base(session)
         {
             this.Timeout = TimeSpan.FromMinutes(15);
         }
+
+        #endregion
+
+        #region CRUD operations
 
         public BrontoResult Add(contactObject contact)
         {
@@ -76,7 +81,7 @@ namespace Bronto.API
             return Read(new contactFilter());
         }
 
-        public List<contactObject> Read(contactFilter filter)
+        public List<contactObject> Read(contactFilter filter, readContacts options = null)
         {
             if (filter == null)
             {
@@ -84,7 +89,7 @@ namespace Bronto.API
             }
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
             {
-                readContacts c = new readContacts();
+                readContacts c = options ?? new readContacts();
                 c.filter = filter;
                 c.pageNumber = 1;
                 List<contactObject> list = new List<contactObject>();
@@ -110,7 +115,7 @@ namespace Bronto.API
         {
             return await ReadAsync(new contactFilter());
         }
-        public async Task<List<contactObject>> ReadAsync(contactFilter filter)
+        public async Task<List<contactObject>> ReadAsync(contactFilter filter, readContacts options = null)
         {
             if (filter == null)
             {
@@ -118,7 +123,7 @@ namespace Bronto.API
             }
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
             {
-                readContacts c = new readContacts();
+                readContacts c = options ?? new readContacts();
                 c.filter = filter;
                 c.pageNumber = 1;
                 List<contactObject> list = new List<contactObject>();
@@ -160,6 +165,9 @@ namespace Bronto.API
             }
         }
 
+        #endregion
+
+        #region Properties
 
         public List<fieldObject> Fields
         {
@@ -191,7 +199,19 @@ namespace Bronto.API
             }
         }
 
+        #endregion
 
+        #region static properties and methods
+
+        public static readContacts ReadOptions
+        {
+            get
+            {
+                return new readContacts();
+            }
+        }
+
+        #endregion
 
     }
 }

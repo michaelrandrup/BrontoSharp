@@ -22,4 +22,18 @@ namespace Bronto.API
         public static readonly string Deleted = "deleted";
         public static readonly string Temporary = "tmp";
     }
+
+    public static class FieldTypes
+    {
+        public static readonly string Text = "text";
+        public static readonly string MultilineText = "textarea";
+        public static readonly string Password = "password";
+        public static readonly string Checkbox = "checkbox";
+        public static readonly string RadioButtons = "radio";
+        public static readonly string SelectList = "select";
+        public static readonly string WholeNumber = "integer";
+        public static readonly string DecimalNumber = "float";
+        public static readonly string Currency = "currency";
+        public static readonly string Date = "date";
+    }
 }

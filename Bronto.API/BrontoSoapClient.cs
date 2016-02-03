@@ -13,11 +13,9 @@ namespace Bronto.API
     {
         public const string BrontoApiDefaultUrl = "https://api.bronto.com/v4";
         public static TimeSpan DefaultTimeout = TimeSpan.FromMinutes(1);
-
+        public static int MaxWriteCapacity = 5000;
         public static BrontoSoapPortTypeClient Create(TimeSpan? Timeout = null)
         {
-            //BasicHttpsBinding binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
-            //BrontoSoapPortTypeClient client = new BrontoSoapPortTypeClient();
             return Create(new BasicHttpsBinding(BasicHttpsSecurityMode.Transport) {MaxReceivedMessageSize = Int32.MaxValue, ReceiveTimeout = Timeout ?? DefaultTimeout, SendTimeout = Timeout ?? DefaultTimeout }, new EndpointAddress(BrontoApiDefaultUrl));
         }
 
