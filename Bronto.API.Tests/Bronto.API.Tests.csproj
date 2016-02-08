@@ -59,6 +59,7 @@
     <Compile Include="BrontoBaseTestWithLogin.cs" />
     <Compile Include="ContactTests.cs" />
     <Compile Include="LoginSessionTests.cs" />
+    <Compile Include="GettingStartedTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bronto.API\Bronto.API.csproj">
