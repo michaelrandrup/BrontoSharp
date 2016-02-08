@@ -21,10 +21,20 @@ namespace Bronto.API
 
         #region CRUD operations
 
+        /// <summary>
+        /// Add a new contact to Bronto
+        /// </summary>
+        /// <param name="contact">The contact to add</param>
+        /// <returns>The result of the add operation <seealso cref="BrontoResult"/></returns>
         public BrontoResult Add(contactObject contact)
         {
             return Add(new contactObject[] { contact });
         }
+        /// <summary>
+        /// Adds a list of new contacts to Bronto
+        /// </summary>
+        /// <param name="contacts">the list of contacts to add</param>
+        /// <returns>The result of the add operation <seealso cref="BrontoResult"/></returns>
         public BrontoResult Add(IEnumerable<contactObject> contacts)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
@@ -34,11 +44,21 @@ namespace Bronto.API
             }
         }
 
+        /// <summary>
+        /// Add a new contact to Bronto
+        /// </summary>
+        /// <param name="contact">The contact to add</param>
+        /// <returns>The result of the add operation <seealso cref="BrontoResult"/></returns>
         public async Task<BrontoResult> AddAsync(contactObject contact)
         {
             return await AddAsync(new contactObject[] { contact });
         }
 
+        /// <summary>
+        /// Adds a list of new contacts to Bronto
+        /// </summary>
+        /// <param name="contacts">the list of contacts to add</param>
+        /// <returns>The result of the add operation <seealso cref="BrontoResult"/></returns>
         public async Task<BrontoResult> AddAsync(IEnumerable<contactObject> contacts)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
@@ -48,10 +68,21 @@ namespace Bronto.API
             }
         }
 
+        /// <summary>
+        /// Add or updates a contact in Bronto
+        /// </summary>
+        /// <param name="contact">The contact to add or update</param>
+        /// <returns>The result of the add or update operation <seealso cref="BrontoResult"/></returns>
         public BrontoResult AddOrUpdate(contactObject contact)
         {
             return AddOrUpdate(new contactObject[] { contact });
         }
+
+        /// <summary>
+        /// Add or updates a list of contact in Bronto
+        /// </summary>
+        /// <param name="contact">The contacts to add or update</param>
+        /// <returns>The result of the add or update operation <seealso cref="BrontoResult"/></returns>
         public BrontoResult AddOrUpdate(IEnumerable<contactObject> contacts)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
@@ -61,11 +92,21 @@ namespace Bronto.API
             }
         }
 
+        /// <summary>
+        /// Add or updates a contact in Bronto
+        /// </summary>
+        /// <param name="contact">The contact to add or update</param>
+        /// <returns>The result of the add or update operation <seealso cref="BrontoResult"/></returns>
         public async Task<BrontoResult> AddOrUpdateAsync(contactObject contact)
         {
             return await AddOrUpdateAsync(new contactObject[] { contact });
         }
 
+        /// <summary>
+        /// Add or updates a list of contact in Bronto
+        /// </summary>
+        /// <param name="contact">The contacts to add or update</param>
+        /// <returns>The result of the add or update operation <seealso cref="BrontoResult"/></returns>
         public async Task<BrontoResult> AddOrUpdateAsync(IEnumerable<contactObject> contacts)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
@@ -76,11 +117,33 @@ namespace Bronto.API
         }
 
 
+        /// <summary>
+        /// Reads all bronto contacts with the minimal number of fields returned
+        /// </summary>
+        /// <returns>the list of contacts</returns>
         public List<contactObject> Read()
         {
             return Read(new contactFilter());
         }
 
+        /// <summary>
+        /// Reads all contacts in bronto with the specified return fields
+        /// </summary>
+        /// <param name="options">The fields and information to return. Use the extension methods on the readContacts class to specify options</param>
+        /// <returns>the list of contacts</returns>
+        public List<contactObject> Read(readContacts options)
+        {
+            return Read(new contactFilter(),options);
+        }
+
+
+
+        /// <summary>
+        /// Reads contacts from bronto using a filter and the specified return fields and information
+        /// </summary>
+        /// <param name="filter">The filter to use when reading</param>
+        /// <param name="options">The fields and information to return. Use the extension methods on the readContacts class to specify options</param>
+        /// <returns>the list of contacts</returns>
         public List<contactObject> Read(contactFilter filter, readContacts options = null)
         {
             if (filter == null)
@@ -111,10 +174,32 @@ namespace Bronto.API
             }
         }
 
+        /// <summary>
+        /// Reads all bronto contacts with the minimal number of fields returned
+        /// </summary>
+        /// <returns>the list of contacts</returns>
         public async Task<List<contactObject>> ReadAsync()
         {
             return await ReadAsync(new contactFilter());
         }
+
+        /// <summary>
+        /// Reads all contacts in bronto with the specified return fields
+        /// </summary>
+        /// <param name="options">The fields and information to return. Use the extension methods on the readContacts class to specify options</param>
+        /// <returns>the list of contacts</returns>
+        public async Task<List<contactObject>> ReadAsync(readContacts options)
+        {
+            return await ReadAsync(new contactFilter(),options);
+        }
+
+
+        /// <summary>
+        /// Reads contacts from bronto using a filter and the specified return fields and information
+        /// </summary>
+        /// <param name="filter">The filter to use when reading</param>
+        /// <param name="options">The fields and information to return. Use the extension methods on the readContacts class to specify options</param>
+        /// <returns>the list of contacts</returns>
         public async Task<List<contactObject>> ReadAsync(contactFilter filter, readContacts options = null)
         {
             if (filter == null)
@@ -147,6 +232,11 @@ namespace Bronto.API
             }
         }
 
+        /// <summary>
+        /// Deletes a list of contacts in bronto
+        /// </summary>
+        /// <param name="contacts">the contacts to delete</param>
+        /// <returns>The result of the Delete operation</returns>
         public BrontoResult Delete(IEnumerable<contactObject> contacts)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
@@ -156,6 +246,11 @@ namespace Bronto.API
             }
         }
 
+        /// <summary>
+        /// Deletes a list of contacts in bronto
+        /// </summary>
+        /// <param name="contacts">the contacts to delete</param>
+        /// <returns>The result of the Delete operation</returns>
         public async Task<BrontoResult> DeleteAsync(IEnumerable<contactObject> contacts)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create(Timeout))
@@ -169,6 +264,9 @@ namespace Bronto.API
 
         #region Properties
 
+        /// <summary>
+        /// Returns the list of custom contact fields
+        /// </summary>
         public List<fieldObject> Fields
         {
             get
@@ -203,6 +301,9 @@ namespace Bronto.API
 
         #region static properties and methods
 
+        /// <summary>
+        /// Returns a new readContacts object to be used in the Read method <see cref="Read(contactFilter, readContacts)"/>
+        /// </summary>
         public static readContacts ReadOptions
         {
             get

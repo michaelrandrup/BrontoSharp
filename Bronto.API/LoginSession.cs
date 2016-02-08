@@ -10,9 +10,20 @@ using sessionHeader = Bronto.API.BrontoService.sessionHeader;
 
 namespace Bronto.API
 {
+    /// <summary>
+    /// Wrapper class for the bronto login session. All API Wrapper classes are initialized with this class
+    /// </summary>
     public class LoginSession
     {
+        /// <summary>
+        ///  Returns the current login session Id
+        /// </summary>
         public string SessionId { get; private set; }
+        /// <summary>
+        /// Creates a new Login session
+        /// </summary>
+        /// <param name="ApiToken">A valid API token. See dev.bronto.com for details</param>
+        /// <returns>The Login session</returns>
         public static LoginSession Create(string ApiToken)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create())
@@ -24,7 +35,11 @@ namespace Bronto.API
                 return login;
             }
         }
-
+        /// <summary>
+        /// Creates a new Login session
+        /// </summary>
+        /// <param name="ApiToken">A valid API token. See dev.bronto.com for details</param>
+        /// <returns>The Login session</returns>
         public static async Task<LoginSession> CreateAsync(string ApiToken)
         {
             using (BrontoSoapPortTypeClient client = BrontoSoapClient.Create())
@@ -36,6 +51,9 @@ namespace Bronto.API
             }
         }
 
+        /// <summary>
+        /// Returns the sessionHeader used in all API calls to the Bronto Web service
+        /// </summary>
         internal sessionHeader SessionHeader
         {
             get {

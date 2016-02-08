@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bronto.API
 {
+    /// <summary>
+    /// Valid Contact status codes
+    /// </summary>
     public static class ContactStatus
     {
         public static readonly string Active = "active";
@@ -16,6 +19,9 @@ namespace Bronto.API
         public static readonly string Unsubscribed = "unsub";
     }
 
+    /// <summary>
+    /// Valid List status codes
+    /// </summary>
     public static class ListStatus
     {
         public static readonly string Active = "active";
@@ -23,6 +29,9 @@ namespace Bronto.API
         public static readonly string Temporary = "tmp";
     }
 
+    /// <summary>
+    /// Valid custom field types
+    /// </summary>
     public static class FieldTypes
     {
         public static readonly string Text = "text";

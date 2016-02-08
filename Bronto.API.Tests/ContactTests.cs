@@ -24,6 +24,73 @@ namespace Bronto.API.Tests
 
         }
 
+        [TestMethod] 
+        public void AddContactWithListReference()
+        {
+            MailLists lists = new MailLists(Login);
+            Contacts contacts = new Contacts(Login);
+
+            List<mailListObject> mailLists = new List<mailListObject>()
+            {
+                new mailListObject()
+                {
+                     name = "Test list A" + DateTime.Now,
+                     label = "Test list A",
+                      status = Bronto.API.ListStatus.Active
+                },
+                new mailListObject()
+                {
+                     name = "Test list B" + DateTime.Now,
+                     label = "Test list B",
+                      status = Bronto.API.ListStatus.Active
+                }
+            };
+
+            BrontoResult listResult = lists.Add(mailLists);
+            Assert.IsFalse(listResult.HasErrors, "The two test lists was not created");
+            mailLists[0].id = listResult.Items[0].Id;
+            mailLists[1].id = listResult.Items[1].Id;
+
+
+            contactObject contact = GetTestContacts(1, new Random()).First();
+            contact.listIds = listResult.Items.Select(x => x.Id).ToArray();
+            BrontoResult contactResult = contacts.Add(contact);
+            Assert.IsFalse(contactResult.HasErrors, "The contact was not created");
+
+            contactFilter filter = new contactFilter();
+            filter.listId = listResult.Items.Select(x => x.Id).ToArray();
+            filter.type = filterType.OR;
+            filter.typeSpecified = true;
+            List<contactObject> listContacts = contacts.Read(filter, Contacts.ReadOptions.IncludeAll().IncludeFields(fields));
+            Assert.IsTrue(listContacts.Count == 1);
+
+
+            contact.listIds = new string[] { listResult.Items.Select(x => x.Id).First() };
+            contactResult = contacts.AddOrUpdate(contact);
+            contact.id = contactResult.Items[0].Id;
+            Assert.IsFalse(contactResult.HasErrors, "The contact was not updated");
+            Assert.IsTrue(contactResult.Items.Count(x => x.IsNew) == 0, "The contact was created instead of being updated");
+
+
+
+            filter = new contactFilter();
+            filter.listId = new string[] { listResult.Items.Select(x => x.Id).First() };
+            listContacts = contacts.Read(filter, new readContacts().IncludeAll().IncludeFields(fields));
+            Assert.IsTrue(listContacts.Count == 1);
+
+            filter.listId = new string[] { listResult.Items.Select(x => x.Id).Last() };
+            listContacts = contacts.Read(filter, new readContacts().IncludeAll().IncludeFields(fields));
+            Assert.IsTrue(listContacts.Count == 0);
+
+            listResult = lists.Delete(mailLists);
+            Assert.IsFalse(listResult.HasErrors, "Unable to delete the lists");
+            contactResult = contacts.Delete(new List<contactObject>() { contact });
+            Assert.IsFalse(contactResult.HasErrors, "Unable to delete the contact");
+
+        }
+
+
+
         [TestMethod]
         public void Add5Contacts()
         {
