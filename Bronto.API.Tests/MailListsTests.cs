@@ -28,7 +28,7 @@ namespace Bronto.API.Tests
 
 
         [TestMethod()]
-        public void AddTest()
+        public void AddListTest()
         {
             BrontoResult result = AddList();
             Assert.IsFalse(result.HasErrors);
@@ -65,7 +65,7 @@ namespace Bronto.API.Tests
 
 
         [TestMethod()]
-        public void UpdateTest()
+        public void UpdateListTest()
         {
             MailLists mailLists = new MailLists(Login);
             BrontoResult result = AddList();
